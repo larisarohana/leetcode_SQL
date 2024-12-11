@@ -1,2 +1,2 @@
-# leetcode_SQL
+# LeetCode
 Solution for Leetcode SQL Questions
