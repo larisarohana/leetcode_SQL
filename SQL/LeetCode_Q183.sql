@@ -20,5 +20,5 @@ insert into Orders (id, customerId) values ('2', '1');
 
 Select * from Orders;
 
-select * from Customers Cust
+select cust.Name Customers from Customers Cust
 where NOT EXISTS (Select 1 from orders ord where Cust.id = Ord.customerId);
