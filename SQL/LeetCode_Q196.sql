@@ -26,13 +26,17 @@ insert into Person_196 (id, email) values ('1', 'john@example.com');
 insert into Person_196 (id, email) values ('2', 'bob@example.com');
 insert into Person_196 (id, email) values ('3', 'john@example.com');
 
-SET SQL_SAFE_UPDATES = 0; -- To disable safe mode else Error 1175 will come in MySQL Workbench
-DELETE p1.* FROM Person_196 p1
-JOIN Person_196 p2
-ON p1.email = p2.email
-WHERE p1.id > p2.id; 
+SET SQL_SAFE_UPDATES = 0;-- To disable safe mode else Error 1175 will come in MySQL Workbench
+DELETE p1 . * FROM Person_196 p1
+        JOIN
+    Person_196 p2 ON p1.email = p2.email 
+WHERE
+    p1.id > p2.id;
 
-select * from Person_196;
+SELECT 
+    *
+FROM
+    Person_196;
 
 /*To find dupliate rows*/
 SELECT 
