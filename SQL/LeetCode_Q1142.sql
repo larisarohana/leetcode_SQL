@@ -1,0 +1,63 @@
+/*Q.No.- 1142. User Activity for the Past 30 Days II 
+Description - 
+Write an SQL query to find the average number of sessions per user for a period of 30 days ending 2019-07-27 inclusively, rounded to 2 decimal places. The sessions we want to count for a user are those with at least one activity in that time period.
+
+The query result format is in the following example:
+
+
+Activity table:
++---------+------------+---------------+---------------+
+| user_id | session_id | activity_date | activity_type |
++---------+------------+---------------+---------------+
+| 1       | 1          | 2019-07-20    | open_session  |
+| 1       | 1          | 2019-07-20    | scroll_down   |
+| 1       | 1          | 2019-07-20    | end_session   |
+| 2       | 4          | 2019-07-20    | open_session  |
+| 2       | 4          | 2019-07-21    | send_message  |
+| 2       | 4          | 2019-07-21    | end_session   |
+| 3       | 2          | 2019-07-21    | open_session  |
+| 3       | 2          | 2019-07-21    | send_message  |
+| 3       | 2          | 2019-07-21    | end_session   |
+| 3       | 5          | 2019-07-21    | open_session  |
+| 3       | 5          | 2019-07-21    | scroll_down   |
+| 3       | 5          | 2019-07-21    | end_session   |
+| 4       | 3          | 2019-06-25    | open_session  |
+| 4       | 3          | 2019-06-25    | end_session   |
++---------+------------+---------------+---------------+
+
+Result table:
++---------------------------+
+| average_sessions_per_user |
++---------------------------+
+| 1.33                      |
++---------------------------+
+User 1 and 2 each had 1 session in the past 30 days while user 3 had 2 sessions so the average is (1 + 1 + 2) / 3 = 1.33.*/
+
+
+Create table If Not Exists Activity_1142 (user_id int, session_id int, activity_date date, activity_type ENUM('open_session', 'end_session', 'scroll_down', 'send_message'));
+
+Truncate table Activity_1142;
+insert into Activity_1142 (user_id, session_id, activity_date, activity_type) values ('1', '1', '2019-07-20', 'open_session');
+insert into Activity_1142 (user_id, session_id, activity_date, activity_type) values ('1', '1', '2019-07-20', 'scroll_down');
+insert into Activity_1142 (user_id, session_id, activity_date, activity_type) values ('1', '1', '2019-07-20', 'end_session');
+insert into Activity_1142 (user_id, session_id, activity_date, activity_type) values ('2', '4', '2019-07-20', 'open_session');
+insert into Activity_1142 (user_id, session_id, activity_date, activity_type) values ('2', '4', '2019-07-21', 'send_message');
+insert into Activity_1142 (user_id, session_id, activity_date, activity_type) values ('2', '4', '2019-07-21', 'end_session');
+insert into Activity_1142 (user_id, session_id, activity_date, activity_type) values ('3', '2', '2019-07-21', 'open_session');
+insert into Activity_1142 (user_id, session_id, activity_date, activity_type) values ('3', '2', '2019-07-21', 'send_message');
+insert into Activity_1142 (user_id, session_id, activity_date, activity_type) values ('3', '2', '2019-07-21', 'end_session');
+insert into Activity_1142 (user_id, session_id, activity_date, activity_type) values ('3', '5', '2019-07-21', 'open_session');
+insert into Activity_1142 (user_id, session_id, activity_date, activity_type) values ('3', '5', '2019-07-21', 'send_message');
+insert into Activity_1142 (user_id, session_id, activity_date, activity_type) values ('3', '5', '2019-07-21', 'end_session');
+insert into Activity_1142 (user_id, session_id, activity_date, activity_type) values ('4', '3', '2019-06-25', 'open_session');
+insert into Activity_1142 (user_id, session_id, activity_date, activity_type) values ('4', '3', '2019-06-25', 'end_session');
+
+SELECT * FROM Activity_1142;
+
+SELECT avg(total_distinct_sessions) as average_sessions_per_user 
+FROM
+(SELECT  User_id, COUNT(DISTINCT session_id) as total_distinct_sessions
+FROM Activity_1142
+WHERE (activity_date > DATE_SUB('2019-07-27', INTERVAL 30 day) and activity_date <= '2019-07-27')
+ GROUP BY USER_ID) t1
+;
