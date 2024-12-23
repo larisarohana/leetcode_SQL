@@ -38,3 +38,8 @@ FROM MyNumbers_619
 GROUP BY num
 HAVING COUNT(num) = 1) numt
 ;
+
+SELECT max(num) FROM
+(SELECT num, count(num) over(partition by num) count_num
+FROM MyNumbers_619) numt
+WHERE count_num<2;

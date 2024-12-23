@@ -40,15 +40,15 @@ INSERT INTO seats_603 (seat_id, free) VALUES
 (14,0),
 (15,0);
 
-select * from seats_603;
+SELECT 
+DISTINCT t1.seat_id 
+FROM seats_603 t1
+JOIN seats_603 t2
+WHERE abs(t1.seat_id-t2.seat_id) = 1
+AND t1.free = t2.free
+AND t1.free = 1
+order by t1.seat_id 
+;
 
-select t.*,t1.*,t2.* from seats_603 as t
-join seats_603 as t1
-join seats_603 as t2
-where abs(t.seat_id -t1.seat_id) = 1
-and t.free = 1
-and t1.free= 1
-
-order by t.seat_id;
 
 

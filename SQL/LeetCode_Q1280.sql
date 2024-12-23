@@ -95,14 +95,13 @@ insert into Examinations_1280 (student_id, subject_name) values ('13', 'Physics'
 insert into Examinations_1280 (student_id, subject_name) values ('2', 'Math');
 insert into Examinations_1280 (student_id, subject_name) values ('1', 'Math');
 
-SELECT t1.student_id ,
-t1.student_name ,
-t2.subject_name ,
-COUNT(t3.student_id) as attended_exams 
-FROM (Students_1280 t1,
-Subjects_1280 t2)
-LEFT JOIN Examinations_1280  t3 ON 
- (t1.student_id = t3.student_id 
-AND t2.subject_name = t3.subject_name)
-GROUP BY t1.student_id, t2.subject_name
-;
+SELECT s1.student_id,s1.student_name , s1.subject_name, coalesce(s2.attended_exams,0) attended_exams
+FROM
+(SELECT *
+FROM Students_1280
+JOIN Subjects_1280) s1
+LEFT JOIN
+(SELECT DISTINCT student_id, subject_name , COUNT(*) over(partition by student_id, subject_name) as attended_exams
+FROM Examinations_1280) s2
+ON (s1.student_id = s2.student_id and s1.subject_name = s2.subject_name)
+order by s1.student_id,s1.student_name , s1.subject_name;
