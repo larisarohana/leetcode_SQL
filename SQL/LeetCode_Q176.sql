@@ -17,6 +17,7 @@ Truncate table Employee176;
 insert into Employee176 (id, salary) values ('1', '100');
 insert into Employee176 (id, salary) values ('2', '200');
 insert into Employee176 (id, salary) values ('3', '300');
+insert into Employee176 (id, salary) values ('4', '200');
 
 SELECT 
     MAX(salary)
@@ -47,5 +48,10 @@ WHERE
             MAX(salary)
         FROM
             Employee176_1);
+            
 
+SELECT distinct Salary
+, DENSE_RANK() OVER(order by Salary desc) as denserank
+, RANK() OVER(order by Salary desc) as rnk
+FROM Employee176;
 

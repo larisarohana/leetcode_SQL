@@ -48,4 +48,3 @@ SUM(CASE WHEN store = 'store2' THEN price ELSE null END)store2,
 SUM(CASE WHEN store = 'store3' THEN price ELSE null END) store3
 FROM Products_1777
 GROUP BY product_id;
-
