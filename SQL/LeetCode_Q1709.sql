@@ -55,17 +55,12 @@ INSERT INTO UserVisits_1709 (user_id, visit_date) VALUES
 			
 Select * from UserVisits_1709;			
 
-SELECT user_id, MAX(duration)
+SELECT user_id, MAX(duration) as biggest_window
 FROM
 (SELECT user_id, visit_date, ABS(DATEDIFF(coalesce(lead_date, '2021-01-01'), visit_date)) duration
 FROM
 (SELECT *
-, LEAD(visit_date) over(partition by user_id) as lead_date
+, LEAD(visit_date) over(partition by user_id order by visit_date ) as lead_date
 FROM UserVisits_1709) T1) tbl
 GROUP BY user_id ;
 
-(SELECT user_id, visit_date, ABS(DATEDIFF(coalesce(lead_date, '2021-01-01'), visit_date)) duration
-FROM
-(SELECT *
-, LEAD(visit_date) over(partition by user_id) as lead_date
-FROM UserVisits_1709) T1);
